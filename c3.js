@@ -3646,7 +3646,7 @@
             }
 
             if (tooltipRight > chartRight) {
-                tooltipLeft -= tooltipRight - chartRight;
+                tooltipLeft = $$.x(dataToShow[0].x) - tWidth + $$.getCurrentPaddingLeft(true) - 20;
             }
             if (tooltipTop + tHeight > $$.currentHeight) {
                 tooltipTop -= tHeight + 30;
