@@ -202,7 +202,16 @@ c3_chart_internal_fn.updateLegend = function (targetIds, options, transitions) {
         xForLegend = function (id) { return maxWidth * steps[id]; };
         yForLegend = function (id) { return margins[steps[id]] + offsets[id]; };
     } else if ($$.isLegendInset) {
-        xForLegend = function (id) { return maxWidth * steps[id] + 10; };
+        xForLegend = function (id, i) {
+          var offset = 0;
+          for (var key in widths) {
+            if (key === id) {
+              break;
+            }
+            offset += widths[key];
+          }
+          return offset * steps[id];
+        };
         yForLegend = function (id) { return margins[steps[id]] + offsets[id]; };
     } else {
         xForLegend = function (id) { return margins[steps[id]] + offsets[id]; };
