@@ -224,6 +224,7 @@ c3_chart_internal_fn.initWithData = function (data) {
     if ($$.initSubchart) { $$.initSubchart(); }
     if ($$.initTooltip) { $$.initTooltip(); }
     if ($$.initLegend) { $$.initLegend(); }
+    $$.initTitle();
 
     /*-- Main Region --*/
 

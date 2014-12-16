@@ -229,6 +229,7 @@
         if ($$.initSubchart) { $$.initSubchart(); }
         if ($$.initTooltip) { $$.initTooltip(); }
         if ($$.initLegend) { $$.initLegend(); }
+        $$.initTitle();
 
         /*-- Main Region --*/
 
@@ -4008,13 +4009,20 @@
         $$.legendHasRendered = true;
     };
 
+    c3_chart_internal_fn.initTitle = function () {
+        var $$ = this;
+        $$.title = $$.svg.append("text")
+              .text($$.config.title_text)
+              .attr("class", "tn_charts2_chart_title")
+              .attr("x", $$.getCurrentPaddingLeft() + $$.config.title_x)
+              .attr("y", $$.getCurrentPaddingTop() + $$.config.title_y);
+    };
+
     c3_chart_internal_fn.redrawTitle = function () {
         var $$ = this;
-        $$.svg.append("text")
-              .text($$.config.title_text)
+        $$.title
               .attr("x", $$.getCurrentPaddingLeft() + $$.config.title_x)
-              .attr("y", $$.getCurrentPaddingTop() + $$.config.title_y)
-              .attr("class", "tn_charts2_chart_title");
+              .attr("y", $$.getCurrentPaddingTop() + $$.config.title_y);
     };
     c3_chart_internal_fn.initAxis = function () {
         var $$ = this, config = $$.config, main = $$.main;
