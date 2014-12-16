@@ -569,6 +569,9 @@ c3_chart_internal_fn.redraw = function (options, transitions) {
         $$.redrawText(durationForExit);
     }
 
+    // title
+    $$.redrawTitle();
+
     // arc
     if ($$.redrawArc) { $$.redrawArc(duration, durationForExit, withTransform); }
 

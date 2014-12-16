@@ -77,6 +77,8 @@ c3_chart_internal_fn.getDefaultConfig = function () {
         legend_item_onclick: undefined,
         legend_item_onmouseover: undefined,
         legend_item_onmouseout: undefined,
+        legend_item_width: 10,
+        legend_item_height: 10,
         legend_equally: false,
         // axis
         axis_rotated: false,
@@ -188,7 +190,10 @@ c3_chart_internal_fn.getDefaultConfig = function () {
         },
         tooltip_init_show: false,
         tooltip_init_x: 0,
-        tooltip_init_position: {top: '0px', left: '50px'}
+        tooltip_init_position: {top: '0px', left: '50px'},
+        title_text: undefined,
+        title_x: 0,
+        title_y: 0
     };
 
     Object.keys(this.additionalConfig).forEach(function (key) {
