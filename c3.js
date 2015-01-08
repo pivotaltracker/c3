@@ -3812,7 +3812,7 @@
                 box = getTextBox(textElement, id),
                 itemWidth = box.width + tileWidth + (isLast && !($$.isLegendRight || $$.isLegendInset) ? 0 : paddingRight),
                 itemHeight = box.height + paddingTop,
-                itemLength = $$.isLegendRight || $$.isLegendInset ? itemHeight : itemWidth,
+                itemLength = $$.isLegendRight || ($$.isLegendInset && !$$.isLegendTop) ? itemHeight : itemWidth,
                 areaLength = $$.isLegendRight || $$.isLegendInset ? $$.getLegendHeight() : $$.getLegendWidth(),
                 margin, maxLength;
 
@@ -3826,7 +3826,7 @@
                         step++;
                     }
                 }
-                steps[id] = step;
+                steps[id] = $$.legendStep;
                 margins[step] = $$.isLegendInset ? 10 : margin;
                 offsets[id] = totalLength;
                 totalLength += itemLength;
