@@ -205,7 +205,7 @@ c3_chart_internal_fn.updateLegend = function (targetIds, options, transitions) {
         xForLegend = function (id) { return maxWidth * steps[id]; };
         yForLegend = function (id) { return margins[steps[id]] + offsets[id]; };
     } else if ($$.isLegendInset) {
-        xForLegend = function (id, i) {
+        xForLegend = function (id) {
           var offset = 0;
           for (var key in widths) {
             if (key === id) {
