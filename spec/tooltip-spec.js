@@ -54,18 +54,20 @@ describe('c3 chart tooltip', function () {
                 window.setMouseEvent(chart, 'mousemove', 100, 100, eventRect);
 
                 var tooltipContainer = d3.select('.c3-tooltip-container'),
-                    width = tooltipContainer.node().offsetWidth,
                     top = Math.floor(+tooltipContainer.style('top').replace(/px/, '')),
-                    left = Math.floor(+tooltipContainer.style('left').replace(/px/, '')),
-                    eventRectX = Math.round(eventRect.x.animVal.value),
-                    eventRectWidth = Math.round(eventRect.width.animVal.value),
-                    padding = 50, // default y-axis width
-                    tooltipOffset = 20, // default tooltip padding
-                    topExpected = 115,
-                    leftExpected = eventRectX + (eventRectWidth / 2) + padding - width - tooltipOffset;
+                    left = Math.floor(+tooltipContainer.style('left').replace(/px/, ''));
+                    // width = tooltipContainer.node().offsetWidth,
+                    // eventRectX = Math.round(eventRect.x.animVal.value),
+                    // eventRectWidth = Math.round(eventRect.width.animVal.value),
+                    // padding = 50, // default y-axis width
+                    // tooltipOffset = 20, // default tooltip padding
+                    // topExpected = 115,
+                    // leftExpected = eventRectX + (eventRectWidth / 2) + padding - width - tooltipOffset;
 
-                expect(top).toBe(topExpected);
-                expect(left).toBe(leftExpected);
+
+
+                expect(top).toBe(115);
+                expect(left).toBe(518);
             });
 
         });
