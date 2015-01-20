@@ -1,4 +1,4 @@
-var c3 = { version: "0.4.8" };
+var c3 = { version: "0.4.9" };
 
 var c3_chart_fn, c3_chart_internal_fn;
 
@@ -395,7 +395,7 @@ c3_chart_internal_fn.updateSizes = function () {
 };
 
 c3_chart_internal_fn.updateTargets = function (targets) {
-    var $$ = this, config = $$.config;
+    var $$ = this;
 
     /*-- Main --*/
 
@@ -415,11 +415,13 @@ c3_chart_internal_fn.updateTargets = function (targets) {
 
     if ($$.updateTargetsForSubchart) { $$.updateTargetsForSubchart(targets); }
 
-    /*-- Show --*/
-
     // Fade-in each chart
+    $$.showTargets();
+};
+c3_chart_internal_fn.showTargets = function () {
+    var $$ = this;
     $$.svg.selectAll('.' + CLASS.target).filter(function (d) { return $$.isTargetToShow(d.id); })
-      .transition().duration(config.transition_duration)
+      .transition().duration($$.config.transition_duration)
         .style("opacity", 1);
 };
 
@@ -549,22 +551,22 @@ c3_chart_internal_fn.redraw = function (options, transitions) {
         .style('opacity', targetsToShow.length ? 0 : 1);
 
     // grid
-    $$.redrawGrid(duration);
+    $$.updateGrid(duration);
 
     // rect for regions
-    $$.redrawRegion(duration);
+    $$.updateRegion(duration);
 
     // bars
-    $$.redrawBar(durationForExit);
+    $$.updateBar(durationForExit);
 
     // lines, areas and cricles
-    $$.redrawLine(durationForExit);
-    $$.redrawArea(durationForExit);
-    $$.redrawCircle();
+    $$.updateLine(durationForExit);
+    $$.updateArea(durationForExit);
+    $$.updateCircle();
 
     // text
     if ($$.hasDataLabel()) {
-        $$.redrawText(durationForExit);
+        $$.updateText(durationForExit);
     }
 
     // title
@@ -597,40 +599,66 @@ c3_chart_internal_fn.redraw = function (options, transitions) {
     cx = ($$.config.axis_rotated ? $$.circleY : $$.circleX).bind($$);
     cy = ($$.config.axis_rotated ? $$.circleX : $$.circleY).bind($$);
 
-    // transition should be derived from one transition
-    d3.transition().duration(duration).each(function () {
-        var transitions = [];
+    if (options.flow) {
+        flow = $$.generateFlow({
+            targets: targetsToShow,
+            flow: options.flow,
+            duration: duration,
+            drawBar: drawBar,
+            drawLine: drawLine,
+            drawArea: drawArea,
+            cx: cx,
+            cy: cy,
+            xv: xv,
+            xForText: xForText,
+            yForText: yForText
+        });
+    }
 
-        $$.addTransitionForBar(transitions, drawBar);
-        $$.addTransitionForLine(transitions, drawLine);
-        $$.addTransitionForArea(transitions, drawArea);
-        $$.addTransitionForCircle(transitions, cx, cy);
-        $$.addTransitionForText(transitions, xForText, yForText, options.flow);
-        $$.addTransitionForRegion(transitions);
-        $$.addTransitionForGrid(transitions);
+    if (duration) {
+        // transition should be derived from one transition
+        d3.transition().duration(duration).each(function () {
+            var transitionsToWait = [];
 
-        // Wait for end of transitions if called from flow API
-        if (options.flow) {
+            // redraw and gather transitions
+            [
+                $$.redrawBar(drawBar, true),
+                $$.redrawLine(drawLine, true),
+                $$.redrawArea(drawArea, true),
+                $$.redrawCircle(cx, cy, true),
+                $$.redrawText(xForText, yForText, options.flow, true),
+                $$.redrawRegion(true),
+                $$.redrawGrid(true),
+            ].forEach(function (transitions) {
+                transitions.forEach(function (transition) {
+                    transitionsToWait.push(transition);
+                });
+            });
+
+            // Wait for end of transitions to call flow and onrendered callback
             waitForDraw = $$.generateWait();
-            transitions.forEach(function (t) {
+            transitionsToWait.forEach(function (t) {
                 waitForDraw.add(t);
             });
-            flow = $$.generateFlow({
-                targets: targetsToShow,
-                flow: options.flow,
-                duration: duration,
-                drawBar: drawBar,
-                drawLine: drawLine,
-                drawArea: drawArea,
-                cx: cx,
-                cy: cy,
-                xv: xv,
-                xForText: xForText,
-                yForText: yForText
-            });
+        })
+        .call(waitForDraw, function () {
+            if (flow) {
+                flow();
+            }
+            if (config.onrendered) {
+                config.onrendered.call($$);
+            }
+        });
+    }
+    else {
+        $$.redrawBar(drawBar);
+        $$.redrawLine(drawLine);
+        $$.redrawArea(drawArea);
+        $$.redrawCircle(cx, cy);
+        if (config.onrendered) {
+            config.onrendered.call($$);
         }
-    })
-    .call(waitForDraw || function () {}, flow || function () {});
+    }
 
     // update fadein condition
     $$.mapToIds($$.data.targets).forEach(function (id) {

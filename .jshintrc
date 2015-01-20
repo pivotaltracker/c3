@@ -14,5 +14,13 @@
     "loopfunc": true,
     "bitwise": false,
 
-    "browser": true
+    "browser": true,
+
+    "globals": {
+        "describe": false,
+        "beforeEach": false,
+        "it": false,
+        "expect": false 
+    }
+
 }
