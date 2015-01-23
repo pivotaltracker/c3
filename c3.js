@@ -3862,7 +3862,7 @@
     };
     c3_chart_internal_fn.updateLegend = function (targetIds, options, transitions) {
         var $$ = this, config = $$.config;
-        var xForLegend, xForLegendText, xForLegendRect, xForLegendTile, yForLegend, yForLegendText, yForLegendRect, yForLegendTile;
+        var xForLegend, xForLegendText, xForLegendRect, x1ForLegendTile, x2ForLegendTile, yForLegend, yForLegendText, yForLegendRect, yForLegendTile;
         var paddingTop = 4, paddingRight = 10, maxWidth = 0, maxHeight = 0, posMin = 10, tileWidth = 15;
         var l, totalLength = 0, offsets = {}, widths = {}, heights = {}, margins = [0], steps = {}, step = 0;
         var withTransition, withTransitionForTransform;
@@ -3969,8 +3969,9 @@
         yForLegendText = function (id, i) { return yForLegend(id, i) + 9; };
         xForLegendRect = function (id, i) { return xForLegend(id, i); };
         yForLegendRect = function (id, i) { return yForLegend(id, i) - 5; };
-        xForLegendTile = function (id, i) { return xForLegend(id, i) - ((10 - $$.config.legend_item_height) / 2); };
-        yForLegendTile = function (id, i) { return yForLegend(id, i) + ((10 - $$.config.legend_item_height) / 2); };
+        x1ForLegendTile = function (id, i) { return xForLegend(id, i) - 2; };
+        x2ForLegendTile = function (id, i) { return xForLegend(id, i) - 2 + $$.config.legend_item_width; };
+        yForLegendTile = function (id, i) { return yForLegend(id, i) + 4; };
 
         // Define g for legend area
         l = $$.legend.selectAll('.' + CLASS.legendItem)
@@ -4019,14 +4020,10 @@
             .style('fill-opacity', 0)
             .attr('x', $$.isLegendRight || $$.isLegendInset ? xForLegendRect : -200)
             .attr('y', $$.isLegendRight || $$.isLegendInset ? -200 : yForLegendRect);
-        l.append('rect')
+        l.append('line')
             .attr("class", CLASS.legendItemTile)
             .style("pointer-events", "none")
-            .style('fill', $$.color)
-            .attr('x', $$.isLegendRight || $$.isLegendInset ? xForLegendText : -200)
-            .attr('y', $$.isLegendRight || $$.isLegendInset ? -200 : yForLegend)
-            .attr('width', $$.config.legend_item_width)
-            .attr('height', $$.config.legend_item_height);
+            .attr('stroke-width', $$.config.legend_item_height);
 
         // Set background for inset legend
         background = $$.legend.select('.' + CLASS.legendBackground + ' rect');
@@ -4052,12 +4049,14 @@
             .attr('x', xForLegendRect)
             .attr('y', yForLegendRect);
 
-        tiles = $$.legend.selectAll('rect.' + CLASS.legendItemTile)
-            .data(targetIds);
-        (withTransition ? tiles.transition() : tiles)
-            .style('fill', $$.color)
-            .attr('x', xForLegendTile)
-            .attr('y', yForLegendTile);
+        tiles = $$.legend.selectAll('line.' + CLASS.legendItemTile)
+                .data(targetIds);
+            (withTransition ? tiles.transition() : tiles)
+                .style('stroke', $$.color)
+                .attr('x1', x1ForLegendTile)
+                .attr('y1', yForLegendTile)
+                .attr('x2', x2ForLegendTile)
+                .attr('y2', yForLegendTile);
 
         if (background) {
             (withTransition ? background.transition() : background)
