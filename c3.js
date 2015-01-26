@@ -2754,7 +2754,10 @@
         $$.mainLine = $$.main.selectAll('.' + CLASS.lines).selectAll('.' + CLASS.line)
             .data($$.lineData.bind($$));
         $$.mainLine.enter().append('path')
-            .attr('class', $$.classLine.bind($$))
+            .attr('class', function(path) {
+              var extraClasses = $$.config.data_classes[path.id] ? ' ' + $$.config.data_classes[path.id] : '';
+              return $$.classLine(path) + extraClasses;
+            })
             .style("stroke", $$.color);
         $$.mainLine
             .style("opacity", $$.initialOpacity.bind($$))
@@ -4021,9 +4024,9 @@
             .attr('x', $$.isLegendRight || $$.isLegendInset ? xForLegendRect : -200)
             .attr('y', $$.isLegendRight || $$.isLegendInset ? -200 : yForLegendRect);
         l.append('line')
-            .attr("class", CLASS.legendItemTile)
             .style("pointer-events", "none")
-            .attr('stroke-width', $$.config.legend_item_height);
+            .attr('stroke-width', $$.config.legend_item_height)
+            .attr('class', function(id) { return $$.config.data_classes[id] ? $$.config.data_classes[id] + ' ' + CLASS.legendItemTile : CLASS.legendItemTile; });
 
         // Set background for inset legend
         background = $$.legend.select('.' + CLASS.legendBackground + ' rect');
