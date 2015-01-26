@@ -59,7 +59,7 @@ describe('c3 chart tooltip', function () {
 
 
                 expect(top).toBe(115);
-                expect(left).toBe(518);
+                expect(left).toBe(529);
             });
 
         });

@@ -44,7 +44,10 @@ c3_chart_internal_fn.updateLine = function (durationForExit) {
     $$.mainLine = $$.main.selectAll('.' + CLASS.lines).selectAll('.' + CLASS.line)
         .data($$.lineData.bind($$));
     $$.mainLine.enter().append('path')
-        .attr('class', $$.classLine.bind($$))
+        .attr('class', function(path) {
+          var extraClasses = $$.config.data_classes[path.id] ? ' ' + $$.config.data_classes[path.id] : '';
+          return $$.classLine(path) + extraClasses;
+        })
         .style("stroke", $$.color);
     $$.mainLine
         .style("opacity", $$.initialOpacity.bind($$))
