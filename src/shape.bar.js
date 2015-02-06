@@ -31,7 +31,10 @@ c3_chart_internal_fn.updateBar = function (durationForExit) {
     $$.mainBar = $$.main.selectAll('.' + CLASS.bars).selectAll('.' + CLASS.bar)
         .data(barData);
     $$.mainBar.enter().append('path')
-        .attr("class", classBar)
+        .attr("class", function(path) {
+          var extraClasses = $$.config.data_classes[path.id] ? ' ' + $$.config.data_classes[path.id] : '';
+          return classBar(path) + extraClasses;
+        })
         .style("stroke", color)
         .style("fill", color);
     $$.mainBar
