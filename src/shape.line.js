@@ -1,4 +1,4 @@
-c3_chart_internal_fn.initLine = function () {
+ c3_chart_internal_fn.initLine = function () {
     var $$ = this;
     $$.main.select('.' + CLASS.chart).append("g")
         .attr("class", CLASS.chartLines);
@@ -208,7 +208,10 @@ c3_chart_internal_fn.updateArea = function (durationForExit) {
     $$.mainArea = $$.main.selectAll('.' + CLASS.areas).selectAll('.' + CLASS.area)
         .data($$.lineData.bind($$));
     $$.mainArea.enter().append('path')
-        .attr("class", $$.classArea.bind($$))
+        .attr('class', function(path) {
+            var extraClasses = $$.config.data_classes[path.id] ? ' ' + $$.config.data_classes[path.id] : '';
+            return $$.classArea(path) + extraClasses;
+          })
         .style("fill", $$.color)
         .style("opacity", function () { $$.orgAreaOpacity = +d3.select(this).style('opacity'); return 0; });
     $$.mainArea
