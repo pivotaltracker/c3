@@ -80,6 +80,8 @@ c3_chart_internal_fn.getDefaultConfig = function () {
         legend_item_width: 10,
         legend_item_height: 10,
         legend_equally: false,
+        // header
+        header_show: false,
         // axis
         axis_rotated: false,
         axis_x_show: true,
@@ -119,6 +121,7 @@ c3_chart_internal_fn.getDefaultConfig = function () {
         axis_y_tick_time_interval: undefined,
         axis_y_padding: {},
         axis_y_default: undefined,
+        axis_y_showLine: true,
         axis_y2_show: false,
         axis_y2_max: undefined,
         axis_y2_min: undefined,
