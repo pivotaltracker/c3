@@ -731,7 +731,7 @@
         var $$ = this, config = $$.config, x, y;
         if (target === 'main') {
             x = asHalfPixel($$.margin.left);
-            y = asHalfPixel($$.margin.top);
+            y = asHalfPixel($$.margin.top) + $$.headerPadding;
         } else if (target === 'context') {
             x = asHalfPixel($$.margin2.left);
             y = asHalfPixel($$.margin2.top);
