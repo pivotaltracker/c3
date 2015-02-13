@@ -149,6 +149,8 @@
         $$.legendItemWidth = 0;
         $$.legendItemHeight = 0;
 
+        $$.headerPadding = config.header_show ? 20 : 0;
+
         $$.currentMaxTickWidths = {
             x: 0,
             y: 0,
@@ -262,6 +264,7 @@
 
         if ($$.initSubchart) { $$.initSubchart(); }
         if ($$.initTooltip) { $$.initTooltip(); }
+        if ($$.config.header_show) { $$.initHeader(); }
         if ($$.initLegend) { $$.initLegend(); }
         if ($$.initTitle) { $$.initTitle(); }
 
@@ -523,6 +526,9 @@
         if (!config.axis_y2_tick_values && config.axis_y2_tick_count) {
             $$.y2Axis.tickValues($$.axis.generateTickValues($$.y2.domain(), config.axis_y2_tick_count));
         }
+
+        // header background
+        if ($$.config.header_show) { $$.redrawHeader(); }
 
         // axes
         $$.axis.redraw(transitions, hideAxis);
@@ -876,7 +882,10 @@
                 $$.axes.x.call($$.xAxis);
                 $$.axes.subx.call($$.subXAxis);
             } else {
-                $$.axes.y.call($$.yAxis);
+                var axis = $$.axes.y.call($$.yAxis);
+                if (!$$.config.axis_y_showLine) {
+                  axis.select('path').style('visibility', 'hidden');
+                }
                 $$.axes.y2.call($$.y2Axis);
             }
         }
@@ -1139,6 +1148,8 @@
             legend_padding: 0,
             legend_item_tile_width: 10,
             legend_item_tile_height: 10,
+            // header
+            header_show: false,
             // axis
             axis_rotated: false,
             axis_x_show: true,
@@ -1178,6 +1189,7 @@
             axis_y_tick_time_interval: undefined,
             axis_y_padding: {},
             axis_y_default: undefined,
+            axis_y_showLine: true,
             axis_y2_show: false,
             axis_y2_max: undefined,
             axis_y2_min: undefined,
@@ -2651,7 +2663,7 @@
     };
     c3_chart_internal_fn.getCurrentPaddingBottom = function () {
         var config = this.config;
-        return isValue(config.padding_bottom) ? config.padding_bottom : 0;
+        return (isValue(config.padding_bottom) ? config.padding_bottom : 0) + this.headerPadding;
     };
     c3_chart_internal_fn.getCurrentPaddingLeft = function (withoutRecompute) {
         var $$ = this, config = $$.config;
