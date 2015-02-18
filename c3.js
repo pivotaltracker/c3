@@ -1049,6 +1049,7 @@
             legend_item_width: 10,
             legend_item_height: 10,
             legend_equally: false,
+            legend_padding: 0,
             // header
             header_show: false,
             // axis
@@ -3904,7 +3905,7 @@
         function updatePositions(textElement, id, index) {
             var reset = index === 0, isLast = index === targetIds.length - 1,
                 box = getTextBox(textElement, id),
-                itemWidth = box.width + tileWidth + (isLast && !($$.isLegendRight || $$.isLegendInset) ? 0 : paddingRight),
+                itemWidth = box.width + tileWidth + (isLast && !($$.isLegendRight || $$.isLegendInset) ? 0 : paddingRight) + config.legend_padding,
                 itemHeight = box.height + paddingTop,
                 itemLength = $$.isLegendRight || ($$.isLegendInset && !$$.isLegendTop) ? itemHeight : itemWidth,
                 areaLength = $$.isLegendRight || $$.isLegendInset ? $$.getLegendHeight() : $$.getLegendWidth(),
@@ -4116,14 +4117,14 @@
         $$.title = $$.svg.append("text")
               .text($$.config.title_text)
               .attr("class", "tn_charts2_chart_title")
-              .attr("x", $$.getCurrentPaddingLeft() + $$.config.title_x)
+              .attr("x", $$.config.title_x)
               .attr("y", $$.getCurrentPaddingTop() + $$.config.title_y);
     };
 
     c3_chart_internal_fn.redrawTitle = function () {
         var $$ = this;
         $$.title
-              .attr("x", $$.getCurrentPaddingLeft() + $$.config.title_x)
+              .attr("x", $$.config.title_x)
               .attr("y", $$.getCurrentPaddingTop() + $$.config.title_y);
     };
     c3_chart_internal_fn.initHeader = function() {

@@ -80,6 +80,7 @@ c3_chart_internal_fn.getDefaultConfig = function () {
         legend_item_width: 10,
         legend_item_height: 10,
         legend_equally: false,
+        legend_padding: 0,
         // header
         header_show: false,
         // axis
