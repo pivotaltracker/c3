@@ -217,6 +217,8 @@ c3_chart_internal_fn.getDefaultConfig = function () {
             left: 0
         },
         title_position: 'top-center',
+        // mask
+        mask: undefined
     };
 
     Object.keys(this.additionalConfig).forEach(function (key) {
