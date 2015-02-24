@@ -200,7 +200,9 @@ c3_chart_internal_fn.getDefaultConfig = function () {
         tooltip_init_position: {top: '0px', left: '50px'},
         title_text: undefined,
         title_x: 0,
-        title_y: 0
+        title_y: 0,
+        // mask
+        mask: undefined
     };
 
     Object.keys(this.additionalConfig).forEach(function (key) {

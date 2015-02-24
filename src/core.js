@@ -213,6 +213,26 @@ c3_chart_internal_fn.initWithData = function (data) {
 
     // Define defs
     defs = $$.svg.append("defs");
+
+    defs.append("pattern")
+          .attr('id', 'diagonalHatch')
+          .attr("patternUnits", "userSpaceOnUse")
+          .attr("width", "4")
+          .attr("height", "4")
+        .append('path')
+          .attr('d', 'M0,0 L5,5 M3,-1 L5,1 M-1,3 L1,5')
+          .style('stroke', 'white')
+          .attr('stroke-width', '2');
+
+    defs.append("mask")
+          .attr('id', 'diagonalMask')
+        .append('rect')
+          .attr('x', 0)
+          .attr('y', 0)
+          .attr('width', '1000px')
+          .attr('height', '1000px')
+          .attr('fill', 'url(#diagonalHatch)');
+
     $$.clipChart = $$.appendClip(defs, $$.clipId);
     $$.clipXAxis = $$.appendClip(defs, $$.clipIdForXAxis);
     $$.clipYAxis = $$.appendClip(defs, $$.clipIdForYAxis);

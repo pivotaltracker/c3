@@ -30,13 +30,19 @@ c3_chart_internal_fn.updateBar = function (durationForExit) {
         color = function (d) { return $$.color(d.id); };
     $$.mainBar = $$.main.selectAll('.' + CLASS.bars).selectAll('.' + CLASS.bar)
         .data(barData);
-    $$.mainBar.enter().append('path')
+
+    var path = $$.mainBar.enter().append('path')
         .attr("class", function(path) {
           var extraClasses = $$.config.data_classes[path.id] ? ' ' + $$.config.data_classes[path.id] : '';
           return classBar(path) + extraClasses;
         })
         .style("stroke", color)
         .style("fill", color);
+
+        if ($$.config.mask) {
+          path.style("mask", "url(#diagonalMask)");
+        }
+
     $$.mainBar
         .style("opacity", initialOpacity);
     $$.mainBar.exit().transition().duration(durationForExit)
