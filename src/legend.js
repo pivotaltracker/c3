@@ -51,7 +51,7 @@ c3_chart_internal_fn.getLegendHeight = function () {
         if ($$.isLegendRight) {
             h = $$.currentHeight;
         } else {
-            h = Math.max(20, $$.legendItemHeight) * ($$.legendStep + 1);
+            h = Math.max(20, $$.legendItemHeight) * ($$.legendStep ? $$.legendStep  + 1 : $$.totalLegendItems);
         }
     }
     return h;
@@ -113,6 +113,7 @@ c3_chart_internal_fn.clearLegendItemTextBoxCache = function () {
 };
 c3_chart_internal_fn.updateLegend = function (targetIds, options, transitions) {
     var $$ = this, config = $$.config;
+    $$.totalLegendItems = targetIds.length;
     var xForLegend, xForLegendText, xForLegendRect, x1ForLegendTile, x2ForLegendTile, yForLegend, yForLegendText, yForLegendRect, yForLegendTile;
     var paddingTop = 4, paddingRight = 10, maxWidth = 0, maxHeight = 0, posMin = 10, tileWidth = 15;
     var l, totalLength = 0, offsets = {}, widths = {}, heights = {}, margins = [0], steps = {}, step = 0;
@@ -150,7 +151,7 @@ c3_chart_internal_fn.updateLegend = function (targetIds, options, transitions) {
                     step++;
                 }
             }
-            steps[id] = $$.legendStep;
+            steps[id] = $$.legendStep ? $$.legendStep : step;
             margins[step] = $$.isLegendInset ? 10 : margin;
             offsets[id] = totalLength;
             totalLength += itemLength;
@@ -193,7 +194,7 @@ c3_chart_internal_fn.updateLegend = function (targetIds, options, transitions) {
     }
 
     if ($$.isLegendInset) {
-        step = config.legend_inset_step ? config.legend_inset_step : targetIds.length;
+        step = config.legend_inset_step;
         $$.updateLegendStep(step);
     }
 

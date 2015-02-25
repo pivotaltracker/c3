@@ -242,17 +242,24 @@ c3_chart_internal_fn.redrawArc = function (duration, durationForExit, withTransf
         mainArc;
     mainArc = main.selectAll('.' + CLASS.arcs).selectAll('.' + CLASS.arc)
         .data($$.arcData.bind($$));
-    mainArc.enter().append('path')
-        .attr("class", $$.classArc.bind($$))
-        .style("fill", function (d) { return $$.color(d.data); })
-        .style("cursor", function (d) { return config.interaction_enabled && config.data_selection_isselectable(d) ? "pointer" : null; })
-        .style("opacity", 0)
-        .each(function (d) {
-            if ($$.isGaugeType(d.data)) {
-                d.startAngle = d.endAngle = -1 * (Math.PI / 2);
-            }
-            this._current = d;
-        });
+
+    var path = mainArc.enter().append('path');
+
+    path.attr("class", $$.classArc.bind($$))
+      .style("fill", function (d) { return $$.color(d.data); })
+      .style("cursor", function (d) { return config.interaction_enabled && config.data_selection_isselectable(d) ? "pointer" : null; })
+      .style("opacity", 0)
+      .each(function (d) {
+          if ($$.isGaugeType(d.data)) {
+              d.startAngle = d.endAngle = -1 * (Math.PI / 2);
+          }
+          this._current = d;
+      });
+
+      if ($$.config.mask) {
+        path.style("mask", "url(#diagonalMask)");
+      }
+
     mainArc
         .attr("transform", function (d) { return !$$.isGaugeType(d.data) && withTransform ? "scale(0)" : ""; })
         .style("opacity", function (d) { return d === this._current ? 0 : 1; })
