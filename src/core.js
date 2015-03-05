@@ -263,8 +263,8 @@ c3_chart_internal_fn.initWithData = function (data) {
         .append('rect')
           .attr('x', 0)
           .attr('y', 0)
-          .attr('width', '1000px')
-          .attr('height', '1000px')
+          .attr('width', '10000px')
+          .attr('height', '10000px')
           .attr('fill', 'url(#diagonalHatch)');
 
     $$.clipChart = $$.appendClip(defs, $$.clipId);
