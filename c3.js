@@ -4098,7 +4098,7 @@
                         step++;
                     }
                 }
-                steps[id] = $$.legendStep;
+                steps[id] = $$.legendStep ? $$.legendStep : step;
                 margins[step] = $$.isLegendInset ? 10 : margin;
                 offsets[id] = totalLength;
                 totalLength += itemLength;
@@ -4141,7 +4141,7 @@
         }
 
         if ($$.isLegendInset) {
-            step = config.legend_inset_step ? config.legend_inset_step : targetIds.length;
+            step = config.legend_inset_step;
             $$.updateLegendStep(step);
         }
 
