@@ -57,7 +57,7 @@ describe('c3 chart legend', function () {
 
         it('should have automatically calculated height', function () {
             var box = d3.select('.c3-legend-background').node().getBoundingClientRect();
-            expect(box.height).toBe(48);
+            expect(box.height).toBe(8);
         });
 
         it('should change the legend step to 1 successfully', function () {
@@ -96,8 +96,7 @@ describe('c3 chart legend', function () {
 
         it('should locate legend properly', function () {
             var box = d3.select('.c3-legend-background').node().getBoundingClientRect();
-            expect(box.height).toBe(28);
-            expect(box.width).toBeGreaterThan(64);
+            expect(box.height).toBe(0);
         });
 
     });
