@@ -4333,7 +4333,9 @@
             .attr("width", $$.getCurrentWidth())
             .attr("height", $$.getCurrentPaddingTop());
         $$.headerBorder
-            .attr("x2", $$.getCurrentWidth());
+            .attr("x2", $$.getCurrentWidth())
+            .attr("y1", $$.getCurrentPaddingTop())
+            .attr("y2", $$.getCurrentPaddingTop());
     };
 
     function Axis(owner) {
