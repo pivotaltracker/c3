@@ -1,5 +1,5 @@
 {
-  "name": "c3",
+  "name": "@pivotaltracker/c3",
   "version": "0.4.11-rc1",
   "description": "D3-based reusable chart library",
   "main": "c3.js",
